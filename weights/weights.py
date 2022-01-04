@@ -47,6 +47,7 @@ with open("weightscfg.csv") as csvfile:
     firsttime = row[0]
     name = row[1]
     height = row[2]
+    startingweight = row[3]
     firsttime = date.fromisoformat(firsttime)
     print("Config loaded.")
 
@@ -57,3 +58,6 @@ latestweight = round(float(latestweight), 2)
 print(f"{height} {latestweight} {bmi}")
 recordweights(latestweight, bmi)
 
+totalloss = float(startingweight) - float(latestweight)
+
+print(f"You have been recording since {firsttime} and have lost {totalloss} kg!")
