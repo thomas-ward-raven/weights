@@ -13,6 +13,8 @@ def recordweights(weight, bmi):
 def calculatebmi(weight, height):
     bmi = round(float(weight), 2) / (float(height) ** 2)
     bmi = round(bmi, 2)
+    if bmi > 30:
+        print("You have a BMI of over 30, this is overweight.")
     return(bmi)
 
 
