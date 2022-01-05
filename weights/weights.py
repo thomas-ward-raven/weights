@@ -1,11 +1,10 @@
 import os
 import csv
 import matplotlib.pyplot as plt
-
 from datetime import date
 
 
-
+# Records the weight and BMI provided to it to the weights CSV file
 def recordweights(weight, bmi):
     with open("weights.csv", "a") as csvfile:
         today = date.today()
@@ -13,7 +12,7 @@ def recordweights(weight, bmi):
         csvwriter.writerow([today.isoformat(), weight, bmi])
         print("Your information has been recorded.")
 
-
+# calculates the BMI using the weight and height provided to it
 def calculatebmi(weight, height):
     bmi = round(float(weight), 2) / (float(height) ** 2)
     bmi = round(bmi, 2)
@@ -31,6 +30,7 @@ if fileexists is False:
         csvwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csvwriter.writerow(['Date', 'Weight (KG)', 'BMI'])
 
+# checks to see if config exists and if it doesn't sets it up
 fileexists = os.path.isfile("./weightscfg.csv")
 if fileexists is False:
     with open("weightscfg.csv", "w") as csvfile:
@@ -47,6 +47,7 @@ if fileexists is False:
         print("Run the program again to update your weight and see how you've progressed!")
         exit()
 
+# imports the config
 with open("weightscfg.csv") as csvfile:
     cfgreader = csv.reader(csvfile)
     cfg = list(cfgreader)
@@ -58,6 +59,7 @@ with open("weightscfg.csv") as csvfile:
     firsttime = date.fromisoformat(firsttime)
     print("Config loaded.")
 
+# requests the latest weigh in to calculate BMI
 print(f"Welcome back {name}.")
 latestweight = input("What do you weigh? (KG): ")
 bmi = calculatebmi(latestweight, height)
@@ -69,20 +71,19 @@ totalloss = float(startingweight) - float(latestweight)
 
 print(f"You have been recording since {firsttime} and have lost {totalloss} kg!")
 
+# makes a line graph with the history of weights
 with open("weights.csv") as csvfile:
     weightlist = []
     datelist = []
     weightsreader = csv.reader(csvfile)
-    i=0
     for row in weightsreader:
-        i = i+1
         weightlist.append(row[1])
         datelist.append(row[0])
     datelist.pop(0)
     weightlist.pop(0)
     print(datelist)
     plt.plot(datelist,weightlist)
-    plt.title('test')
-    plt.xlabel('test')
-    plt.ylabel('test')
+    plt.title('Weight History')
+    plt.xlabel('Date')
+    plt.ylabel('Weight (KG)')
     plt.savefig('test.png')
